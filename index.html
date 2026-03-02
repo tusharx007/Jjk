@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Sunanda 💖</title>
+
+
+<link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Pacifico&display=swap" rel="stylesheet">
+
+
+<style>
+body{
+margin:0;
+font-family:'Comic Neue',cursive;
+color:white;
+overflow:hidden;
+transition:background 0.8s ease;
+}
+
+
+/* Background colors per page */
+.bg0{background:linear-gradient(135deg,#ff9a9e,#fecfef);}
+.bg1{background:linear-gradient(135deg,#fbc2eb,#a6c1ee);}
+.bg2{background:linear-gradient(135deg,#ffecd2,#fcb69f);}
+.bg3{background:linear-gradient(135deg,#ff758c,#ff7eb3);}
+
+
+/* Timer */
+#timerScreen{
+position:fixed;
+top:0;left:0;
+width:100%;height:100%;
+background:#ff69b4;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:90px;
+font-weight:bold;
+z-index:100;
+}
+
+
+/* Pages */
+.page{
+display:none;
+position:absolute;
+width:100%;
+height:100%;
+padding:40px 20px;
+box-sizing:border-box;
+text-align:center;
+}
+
+
+.page.active{
+display:block;
+animation:fade 0.6s ease;
+}
+
+
+@keyframes fade{
+from{opacity:0;transform:translateY(20px);}
+to{opacity:1;transform:translateY(0);}
+}
+
+
+.page h1{
+font-family:'Pacifico',cursive;
+font-size:34px;
+}
+
+
+.page p{
+margin-top:20px;
+font-size:18px;
+line-height:1.6;
+min-height:80px;
+}
+
+
+.nextBtn{
+position:absolute;
+bottom:40px;
+left:50%;
+transform:translateX(-50%);
+padding:10px 25px;
+border-radius:25px;
+border:none;
+background:white;
+color:#ff1493;
+font-weight:bold;
+cursor:pointer;
+}
+
+
+/* Teddy */
+#teddy{
+font-size:60px;
+animation:bounce 1s infinite alternate;
+margin-top:20px;
+}
+
+
+@keyframes bounce{
+from{transform:translateY(0);}
+to{transform:translateY(-15px);}
+}
+
+
+/* Hearts */
+.heart{
+position:absolute;
+font-size:20px;
+animation:float 6s linear forwards;
+}
+
+
+@keyframes float{
+0%{transform:translateY(0);opacity:1;}
+100%{transform:translateY(-800px);opacity:0;}
+}
+
+
+/* Sparkle */
+.sparkle{
+position:absolute;
+font-size:14px;
+animation:twinkle 2s infinite alternate;
+}
+
+
+@keyframes twinkle{
+from{opacity:0.3;}
+to{opacity:1;}
+}
+
+
+/* Popup */
+#finalPopup{
+display:none;
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+background:white;
+color:#ff1493;
+padding:25px;
+border-radius:20px;
+text-align:center;
+box-shadow:0 10px 30px rgba(0,0,0,0.3);
+z-index:200;
+}
+
+
+/* Secret message */
+#secret{
+display:none;
+position:fixed;
+bottom:20px;
+left:50%;
+transform:translateX(-50%);
+background:white;
+color:#ff1493;
+padding:10px 20px;
+border-radius:20px;
+font-size:14px;
+}
+</style>
+</head>
+
+
+<body class="bg0">
+
+
+<div id="timerScreen">5</div>
+
+
+<div class="page" id="page0">
+<h1>🌷 Sunanda 🌷</h1>
+<div id="teddy">🧸</div>
+<p data-text="Happy Birthday to the most beautiful smile in my life 💕"></p>
+<button class="nextBtn">Next</button>
+</div>
+
+
+<div class="page" id="page1">
+<h1>My Cute Angry Girl 😠💖</h1>
+<p data-text="You get angry quickly… but in anger you look even more beautiful 😍 And I secretly love it."></p>
+<button class="nextBtn">Next</button>
+</div>
+
+
+<div class="page" id="page2">
+<h1>My Peace 🌙</h1>
+<p data-text="I’m happiest when I fall asleep watching you, feeling lucky that you are mine every day."></p>
+<button class="nextBtn">Next</button>
+</div>
+
+
+<div class="page" id="page3">
+<h1>Forever ❤️</h1>
+<p data-text="No matter what happens, I will always choose you. Every single time."></p>
+<button class="nextBtn" onclick="showFinal()">Final Surprise</button>
+</div>
+
+
+<div id="finalPopup">
+<h2>I Love You So Much 💕</h2>
+<p>You are my today, tomorrow and forever 😌</p>
+<button onclick="closePopup()">Close</button>
+</div>
+
+
+<div id="secret">You found the secret message 😌💖 I’m always yours.</div>
+
+
+<script>
+
+
+let current=0;
+let total=4;
+let body=document.body;
+
+
+/* Countdown */
+let time=5;
+let timer=document.getElementById("timerScreen");
+
+
+let countdown=setInterval(function(){
+time--;
+timer.innerText=time;
+if(time<=0){
+clearInterval(countdown);
+timer.style.display="none";
+showPage(0);
+}
+},1000);
+
+
+function showPage(index){
+document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+current=index;
+body.className="bg"+index;
+let page=document.getElementById("page"+index);
+page.classList.add("active");
+typeText(page.querySelector("p"));
+}
+
+
+document.querySelectorAll(".nextBtn").forEach(btn=>{
+btn.addEventListener("click",function(){
+if(current<total-1){
+showPage(current+1);
+}
+});
+});
+
+
+/* Swipe */
+let startX=0;
+document.addEventListener("touchstart",e=>startX=e.touches[0].clientX);
+document.addEventListener("touchend",e=>{
+let endX=e.changedTouches[0].clientX;
+if(startX-endX>50 && current<total-1){
+showPage(current+1);
+}
+});
+
+
+/* Typing */
+function typeText(element){
+element.innerHTML="";
+let text=element.getAttribute("data-text");
+let i=0;
+let typing=setInterval(function(){
+element.innerHTML+=text.charAt(i);
+i++;
+if(i>=text.length) clearInterval(typing);
+},35);
+}
+
+
+/* Hearts */
+setInterval(function(){
+let heart=document.createElement("div");
+heart.className="heart";
+heart.innerHTML="💖";
+heart.style.left=Math.random()*100+"%";
+heart.style.bottom="0px";
+document.body.appendChild(heart);
+setTimeout(()=>heart.remove(),6000);
+},900);
+
+
+/* Sparkles */
+setInterval(function(){
+let sparkle=document.createElement("div");
+sparkle.className="sparkle";
+sparkle.innerHTML="✨";
+sparkle.style.left=Math.random()*100+"%";
+sparkle.style.top=Math.random()*100+"%";
+document.body.appendChild(sparkle);
+setTimeout(()=>sparkle.remove(),2000);
+},500);
+
+
+/* Confetti */
+function showFinal(){
+document.getElementById("finalPopup").style.display="block";
+for(let i=0;i<80;i++){
+let conf=document.createElement("div");
+conf.innerHTML="🎉";
+conf.style.position="fixed";
+conf.style.left=Math.random()*100+"%";
+conf.style.top="-20px";
+conf.style.fontSize="20px";
+conf.style.animation="float 4s linear forwards";
+document.body.appendChild(conf);
+setTimeout(()=>conf.remove(),4000);
+}
+}
+
+
+function closePopup(){
+document.getElementById("finalPopup").style.display="none";
+}
+
+
+/* Long press secret */
+let pressTimer;
+document.addEventListener("touchstart",function(){
+pressTimer=setTimeout(function(){
+document.getElementById("secret").style.display="block";
+setTimeout(()=>document.getElementById("secret").style.display="none",3000);
+},800);
+});
+document.addEventListener("touchend",function(){
+clearTimeout(pressTimer);
+});
+
+
+</script>
+
+
+</body>
+</html>
